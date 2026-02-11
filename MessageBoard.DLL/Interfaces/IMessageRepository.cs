@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MessageBoard.DLL.Interfaces
 {
-    internal interface IMessageRepository
+    public interface IMessageRepository
     {
         Task<IEnumerable<Message>> GetAllMessagesAsync();
         Task AddMessageAsync(Message message);
