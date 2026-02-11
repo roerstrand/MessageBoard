@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="MessageBoard.BLL/MessageBoard.BLL.csproj" />
+  <Project Path="MessageBoard.DLL/MessageBoard.DLL.csproj" />
+  <Project Path="MessageBoard.UI/MessageBoard.UI.csproj" />
+</Solution>
