@@ -8,7 +8,7 @@ using System.Text;
 
 namespace MessageBoard.DLL.Repositories
 {
-    internal class MessageRepository : IMessageRepository
+    public class MessageRepository : IMessageRepository
     {
         private readonly AppDbContext _context;
 
