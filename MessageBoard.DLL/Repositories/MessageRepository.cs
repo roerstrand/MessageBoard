@@ -2,13 +2,13 @@
 using MessageBoard.DLL.Entities;
 using MessageBoard.DLL.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MessageBoard.DLL.Repositories
 {
-    internal class MessageRepository : IMessageRepository
+    public class MessageRepository : IMessageRepository
     {
         private readonly AppDbContext _context;
 
@@ -20,9 +20,13 @@ namespace MessageBoard.DLL.Repositories
         public async Task<IEnumerable<Message>> GetAllMessagesAsync()
         {
             return await _context.Messages
-                .Include(m => m.User)
                 .OrderByDescending(m => m.CreatedAt)
                 .ToListAsync();
+        }
+
+        public async Task<Message?> GetMessageByIdAsync(int id)
+        {
+            return await _context.Messages.FindAsync(id);
         }
 
         public async Task AddMessageAsync(Message message)
@@ -31,10 +35,21 @@ namespace MessageBoard.DLL.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteMessageAsync(Message message)
+        public async Task UpdateMessageAsync(Message message)
         {
+            _context.Messages.Update(message);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> DeleteMessageAsync(int id)
+        {
+            var message = await _context.Messages.FindAsync(id);
+            if (message == null)
+                return false; 
+
             _context.Messages.Remove(message);
             await _context.SaveChangesAsync();
+            return true; 
         }
     }
 }
