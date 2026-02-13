@@ -1,4 +1,4 @@
-﻿using MessageBoard.BLL.DTOs;
+using MessageBoard.BLL.DTOs;
 using MessageBoard.BLL.Interfaces;
 using MessageBoard.DLL.Entities;
 using MessageBoard.DLL.Interfaces;
@@ -8,14 +8,10 @@ namespace MessageBoard.BLL.Services
     public class MessageService : IMessageService
     {
         private readonly IMessageRepository _messageRepository;
-        //private readonly IUserRepository _userRepository;
 
-        public MessageService(
-            IMessageRepository messageRepository,
-            //IUserRepository userRepository)
+        public MessageService(IMessageRepository messageRepository)
         {
             _messageRepository = messageRepository;
-            //_userRepository = userRepository;
         }
 
         public async Task<List<MessageDto>> GetAllMessagesAsync()
@@ -28,7 +24,7 @@ namespace MessageBoard.BLL.Services
                 Content = m.Content,
                 CreatedAt = m.CreatedAt,
                 UserId = m.UserId,
-                UserName = m.User != null ? m.User.FullName : ""
+                UserName = m.User != null ? m.User.DisplayName : ""
             }).ToList();
         }
 
@@ -57,36 +53,9 @@ namespace MessageBoard.BLL.Services
             await _messageRepository.UpdateMessageAsync(message);
         }
 
-
-        public async Task DeleteMessageAsync(int messageId)
+        public async Task DeleteMessageAsync(MessageDto dto)
         {
-            await _messageRepository.DeleteMessageAsync(messageId);
-        }
-
-        public async Task DeleteUserAsync(string userId)
-        {
-            var user = await _userRepository.GetByIdAsync(userId);
-
-            if (user != null)
-            {
-                user.IsDeleted = true;
-                await _userRepository.UpdateUserAsync(user);
-            }
-        }
-
-
-        public async Task UpdateUserAsync(UserDto dto)
-        {
-            var user = await _userRepository.GetByIdAsync(dto.Id);
-
-            if (user != null)
-            {
-                user.FullName = dto.FullName;
-                user.City = dto.City;
-                user.LastLogin = dto.LastLogin;
-
-                await _userRepository.UpdateUserAsync(user);
-            }
+            await _messageRepository.DeleteMessageAsync(dto.Id);
         }
     }
 }
