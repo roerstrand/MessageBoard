@@ -43,10 +43,10 @@ namespace MessageBoard.DLL.Repositories
         {
             var existing = await _context.Messages.FindAsync(message.Id);
             if (existing == null)
-                return; // or throw depending on your policy
+                return; // or throw depending on your policy,
 
             // Only update mutable fields. Avoid changing ownership/creation timestamp here.
-            existing.Content = message.Content;
+            existing.Content = message.Content; // Update content, but not CreatedAt or UserId
 
             // If you have more updatable fields, assign them explicitly here.
 
@@ -57,7 +57,7 @@ namespace MessageBoard.DLL.Repositories
         {
             var message = await _context.Messages.FindAsync(id);
             if (message == null)
-                return false; 
+                return false;  // Not found, nothing to delete
 
             _context.Messages.Remove(message);
             await _context.SaveChangesAsync();
