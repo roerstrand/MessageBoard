@@ -1,5 +1,7 @@
 using MessageBoard.BLL.DTOs;
 using MessageBoard.BLL.Interfaces;
+using MessageBoard.BLL.Services;
+
 //using MessageBoard.BLL.Services;
 using MessageBoard.DLL.Data;
 using MessageBoard.DLL.Entities;
@@ -13,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-//builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 //builder.Services.AddScoped<IUserRepository, UserRepository>();
 
