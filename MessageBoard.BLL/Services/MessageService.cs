@@ -24,7 +24,7 @@ namespace MessageBoard.BLL.Services
                 Content = m.Content,
                 CreatedAt = m.CreatedAt,
                 UserId = m.UserId,
-                UserName = m.User != null ? m.User.FullName : ""
+                UserName = m.User != null ? m.User.DisplayName : ""
             }).ToList();
         }
 
@@ -50,21 +50,12 @@ namespace MessageBoard.BLL.Services
                 CreatedAt = dto.CreatedAt
             };
 
-            try
-            {
-                await _messageRepository.UpdateMessageAsync(message);
-            }
-            catch (NotImplementedException)
-            {
-                throw new NotSupportedException(
-                    "UpdateMessageAsync is not yet implemented in the data access layer.");
-            }
+            await _messageRepository.UpdateMessageAsync(message);
         }
 
-        public async Task DeleteMessageAsync(int messageId)
+        public async Task DeleteMessageAsync(MessageDto dto)
         {
-            var message = new Message { Id = messageId };
-            await _messageRepository.DeleteMessageAsync(message);
+            await _messageRepository.DeleteMessageAsync(dto.Id);
         }
     }
 }
