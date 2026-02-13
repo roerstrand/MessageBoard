@@ -17,6 +17,7 @@ namespace MessageBoard.DLL.Repositories
             _context = context;
         }
 
+
         public async Task<IEnumerable<Message>> GetAllMessagesAsync()
         {
             return await _context.Messages

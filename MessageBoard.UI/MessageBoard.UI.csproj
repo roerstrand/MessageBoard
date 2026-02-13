@@ -8,7 +8,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\MessageBoard.BLL\MessageBoard.BLL.csproj" />
-		<ProjectReference Include="..\MessageBoard.DAL\MessageBoard.DAL.csproj" />
+		<ProjectReference Include="..\MessageBoard.DLL\MessageBoard.DLL.csproj" />
 	</ItemGroup>
 
 </Project>

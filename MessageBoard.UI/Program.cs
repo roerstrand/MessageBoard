@@ -15,6 +15,15 @@ builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AppConnection")));
+builder.Services.AddDbContext<AuthDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AuthConnection")));
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<AuthDbContext>()
+    .AddDefaultTokenProviders();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,6 +35,9 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Re-enable static files so assets in wwwroot are served
+app.UseStaticFiles();
 
 app.UseRouting();
 
