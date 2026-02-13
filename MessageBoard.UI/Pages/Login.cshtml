@@ -1,4 +1,21 @@
 ﻿@page
 @model MessageBoard.UI.Pages.LoginModel
-@{
-}
+
+<h2>Login</h2>
+
+<form method="post">
+
+    <div>
+
+        <input type="text" placeholder="Username" asp-for="Username" />
+    </div>
+
+    <div>
+
+        <input type="text" placeholder="Password" asp-for="Password" />
+        <span asp-validation-for="Password"></span>
+    </div>
+
+    <button type="submit">Login</button>
+
+</form>
