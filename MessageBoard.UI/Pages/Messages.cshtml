@@ -1,14 +1,33 @@
 ﻿@page
-@model MessageBoard.UI.Pages.Index1Model
+@model MessageBoard.UI.Pages.MessagesModel
 
+<div class="container mt-4">
 
-<h1 class="text-center">Messages</h1>
+    <form method="post" class="mb-4">
+        <div class="input-group">
+            <input asp-for="NewMessage" class="form-control" placeholder="Skriv ett meddelande..." />
+            <button class="btn btn-primary">Skicka</button>
+        </div>
+        <span asp-validation-for="NewMessage" class="text-danger"></span>
+    </form>
 
-@foreach (var message in messages.OrderBy(n => n.Name))
-{
-    <div class="card mx-auto">
+    <div class="d-flex flex-column gap-3">
+        @foreach (var msg in Model.Messages)
+        {
+            bool isMine = msg.UserId == Model.CurrentUserId;
 
-
-        <h3 class="mx-auto"> @dog.Name</h3>
+            <div class="d-flex @(isMine ? "justify-content-end" : "justify-content-start")">
+                <div class="card @(isMine ? "bg-primary text-white" : "bg-light")" style="max-width: 60%;">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-1">
+                            @(isMine ? "Du" : msg.UserName)
+                        </h6>
+                        <p class="card-text">@msg.Content</p>
+                        <small class="text-muted">@msg.CreatedAt.ToString("yyyy-MM-dd HH:mm")</small>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
-}
+
+</div>
