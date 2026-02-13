@@ -1,4 +1,14 @@
 ﻿@page
 @model MessageBoard.UI.Pages.Index1Model
-@{
+
+
+<h1 class="text-center">Messages</h1>
+
+@foreach (var message in messages.OrderBy(n => n.Name))
+{
+    <div class="card mx-auto">
+
+
+        <h3 class="mx-auto"> @dog.Name</h3>
+    </div>
 }
