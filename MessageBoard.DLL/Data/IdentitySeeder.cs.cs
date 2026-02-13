@@ -65,3 +65,6 @@ namespace MessageBoard.DLL.Data
         }
     }
 }
+
+
+// Identity Seeder
