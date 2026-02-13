@@ -9,6 +9,7 @@ using MessageBoard.DLL.Interfaces;
 using MessageBoard.DLL.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,43 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 var app = builder.Build();
+// Seed roles and default users (and apply any pending EF Core migrations)
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var logger = services.GetRequiredService<ILogger<Program>>();
+
+    // Apply pending migrations for application and auth DBs so the database is up-to-date
+    try
+    {
+        var authDb = services.GetRequiredService<MessageBoard.DLL.Data.AuthDbContext>();
+        var appDb = services.GetRequiredService<MessageBoard.DLL.Data.AppDbContext>();
+
+        // Ensure databases are created and migrations applied
+        await authDb.Database.MigrateAsync();
+        await appDb.Database.MigrateAsync();
+    }
+    catch (Exception ex)
+    {
+        // Log migration error
+        logger.LogError(ex, "Database migration error");
+        throw;
+    }
+
+    // Run identity seeding ONLY in Development environment
+    if (app.Environment.IsDevelopment())
+    {
+        try
+        {
+            await MessageBoard.DLL.Data.IdentitySeeder.SeedAsync(services);
+        }
+        catch (Exception ex)
+        {
+            // Log seeding error but don't crash the app startup
+            logger.LogError(ex, "An error occurred while seeding roles and users.");
+        }
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
