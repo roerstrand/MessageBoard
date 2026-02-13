@@ -8,14 +8,14 @@ namespace MessageBoard.BLL.Services
     public class MessageService : IMessageService
     {
         private readonly IMessageRepository _messageRepository;
-        private readonly IUserRepository _userRepository;
+        //private readonly IUserRepository _userRepository;
 
         public MessageService(
             IMessageRepository messageRepository,
-            IUserRepository userRepository)
+            //IUserRepository userRepository)
         {
             _messageRepository = messageRepository;
-            _userRepository = userRepository;
+            //_userRepository = userRepository;
         }
 
         public async Task<List<MessageDto>> GetAllMessagesAsync()
@@ -57,6 +57,7 @@ namespace MessageBoard.BLL.Services
             await _messageRepository.UpdateMessageAsync(message);
         }
 
+
         public async Task DeleteMessageAsync(int messageId)
         {
             await _messageRepository.DeleteMessageAsync(messageId);
@@ -72,6 +73,7 @@ namespace MessageBoard.BLL.Services
                 await _userRepository.UpdateUserAsync(user);
             }
         }
+
 
         public async Task UpdateUserAsync(UserDto dto)
         {
