@@ -18,13 +18,15 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
-//builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AppConnection")));
 builder.Services.AddDbContext<AuthDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AuthConnection")));
 
+// System includes Identity services + role support,
+// configured to use our custom ApplicationUser and the AuthDbContext for storage
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<AuthDbContext>()
     .AddDefaultTokenProviders();
@@ -32,10 +34,33 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 // Configure cookie settings for authentication
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "/Index";
+    options.LoginPath = "/Index"; // You can change this to your actual login page
+    options.AccessDeniedPath = "/NoAccess"; // Om inte behörighet, skicka hit (Ifall du vill ha denna sidan)
 });
 
+
+
 var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapRazorPages();
+
+
+
 // Seed roles and default users (and apply any pending EF Core migrations)
 using (var scope = app.Services.CreateScope())
 {
@@ -73,22 +98,5 @@ using (var scope = app.Services.CreateScope())
         }
     }
 }
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-    app.UseHsts();
-}
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapRazorPages();
 
 app.Run();
