@@ -1,3 +1,4 @@
+using MessageBoard.DLL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,10 +8,10 @@ namespace MessageBoard.UI.Pages
 {
     public class RegisterModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public RegisterModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public RegisterModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -27,7 +28,6 @@ namespace MessageBoard.UI.Pages
 
         public string ConfirmPassword { get; set; }
 
-
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -35,12 +35,18 @@ namespace MessageBoard.UI.Pages
                 return Page();
             }
 
-            var user = new IdentityUser { UserName = Username };
-            var result = await _userManager.AddPasswordAsync(user, Password);
+            var user = new ApplicationUser
+            {
+                UserName = Username,
+                DisplayName = Username,
+                IsDeleted = false,
+                LastLogin = null
+            };
+
+            var result = await _userManager.CreateAsync(user, Password);
 
             if (result.Succeeded)
             {
-                //await _signInManager.SignInAsync(user, false);
                 return RedirectToPage("/Login");
             }
 
@@ -48,11 +54,37 @@ namespace MessageBoard.UI.Pages
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
-            return Page();
 
-            //public void OnGet()
-            //{
-            //}
+            return Page();
         }
+
+
+
+        //public async Task<IActionResult> OnPostAsync()
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return Page();
+        //    }
+
+        //    var user = new ApplicationUser { UserName = Username };
+        //    var result = await _userManager.AddPasswordAsync(user, Password);
+
+        //    if (result.Succeeded)
+        //    {
+        //        //await _signInManager.SignInAsync(user, false);
+        //        return RedirectToPage("/Login");
+        //    }
+
+        //    foreach (var error in result.Errors)
+        //    {
+        //        ModelState.AddModelError(string.Empty, error.Description);
+        //    }
+        //    return Page();
+
+        //    //public void OnGet()
+        //    //{
+        //    //}
+        //}
     }
 }
