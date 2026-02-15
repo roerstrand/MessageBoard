@@ -27,8 +27,15 @@ builder.Services.AddDbContext<AuthDbContext>(options =>
 
 // System includes Identity services + role support,
 // configured to use our custom ApplicationUser and the AuthDbContext for storage
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<AuthDbContext>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(Options =>
+{
+    Options.Password.RequireDigit = false;
+    Options.Password.RequireLowercase = false;
+    Options.Password.RequireUppercase = false;
+    Options.Password.RequireNonAlphanumeric = false;
+    Options.Password.RequiredLength = 4;
+    //Options.Password.RequiredUniqueChars = 1;
+})    .AddEntityFrameworkStores<AuthDbContext>()
     .AddDefaultTokenProviders();
 
 // Configure cookie settings for authentication

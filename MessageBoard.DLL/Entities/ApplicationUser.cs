@@ -9,7 +9,7 @@ namespace MessageBoard.DLL.Entities
 
 
         // Rename to be explicit
-        public required string DisplayName { get; set; }
+        public string DisplayName { get; set; }
 
 
         public DateTime? LastLogin { get; set; }
