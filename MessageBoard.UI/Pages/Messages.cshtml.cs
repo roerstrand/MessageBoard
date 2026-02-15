@@ -45,7 +45,7 @@ namespace MessageBoard.UI.Pages
             {
                 Content = NewMessage,
                 UserId = user.Id,
-                UserName = user.UserName
+                UserName = user.DisplayName
             };
 
             await _messageService.AddMessageAsync(dto);

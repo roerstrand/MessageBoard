@@ -57,34 +57,5 @@ namespace MessageBoard.UI.Pages
 
             return Page();
         }
-
-
-
-        //public async Task<IActionResult> OnPostAsync()
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return Page();
-        //    }
-
-        //    var user = new ApplicationUser { UserName = Username };
-        //    var result = await _userManager.AddPasswordAsync(user, Password);
-
-        //    if (result.Succeeded)
-        //    {
-        //        //await _signInManager.SignInAsync(user, false);
-        //        return RedirectToPage("/Login");
-        //    }
-
-        //    foreach (var error in result.Errors)
-        //    {
-        //        ModelState.AddModelError(string.Empty, error.Description);
-        //    }
-        //    return Page();
-
-        //    //public void OnGet()
-        //    //{
-        //    //}
-        //}
     }
 }
