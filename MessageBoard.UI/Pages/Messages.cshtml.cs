@@ -10,9 +10,9 @@ namespace MessageBoard.UI.Pages
     public class MessagesModel : PageModel
     {
         private readonly IMessageService _messageService;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public MessagesModel(IMessageService messageService, UserManager<IdentityUser> userManager)
+        public MessagesModel(IMessageService messageService, UserManager<ApplicationUser> userManager)
         {
             _messageService = messageService;
             _userManager = userManager;
