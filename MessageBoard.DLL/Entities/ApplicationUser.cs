@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
+using System;
 
 namespace MessageBoard.DLL.Entities
 {
@@ -9,8 +10,7 @@ namespace MessageBoard.DLL.Entities
 
 
         // Rename to be explicit
-        public string DisplayName { get; set; }
-
+        public required string DisplayName { get; set; }
 
         public DateTime? LastLogin { get; set; }
 
