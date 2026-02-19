@@ -29,3 +29,32 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+/* Meddelandepanelstyling */
+.messages-panel {
+    max-width: 600px; /* Kapa bredden lite */
+    width: 100%;
+    background: linear-gradient(180deg, #f8fbff, #eef6ff); /* mjuk färg för containern */
+    border-radius: 0.5rem;
+    padding: 1rem;
+    box-shadow: 0 4px 10px rgba(14, 30, 37, 0.04);
+}
+
+/* Individuella meddelande card storlek och färg */
+.message-card {
+    max-width: 60%;
+    border: none;
+}
+
+    /*Egna mess */
+    .message-card.mine {
+        background-color: #0d6efd; /* bootstrap primary */
+        color: #fff;
+    }
+
+    /* Andras mess */
+    .message-card.theirs {
+        background-color: #f8f9fa;
+        color: #212529;
+        border: 1px solid rgba(0,0,0,0.05);
+    }
